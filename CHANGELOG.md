@@ -16,6 +16,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a cookbook for making a transform fault and using this model in ASPECT. \[Juliane Dannberg; 2024-02-14; [#563](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/563)\]
 - Added a system which allows users to tag features. The tag index can then be written out throught the gwb-dat program. \[Menno Fraters and Timo Heister; 2024-02-15; [[#598](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/598)]\]
 - Added variable spreading for mid oceanic ridges. \[Daniel Douglas; 2024-02-16; [#617](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/617)\]
+- Added a new plume feature. \[Juliane Dannberg; 2024-02-15; [[#620](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/620)]\]
+- Added a `--resolution-limit` option to gwb-grid to limit the resolution secified in the .grid file. \[Menno Fraters; 2024-02-16; [#653](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/653)\]
 
 ### Changed 
 - Unified the directories `cookbooks/` and `doc/sphinx/user_manual/cookbooks`. All information about cookbooks including the documentation is now bundled in the top-level `cookbooks/` directory. \[Rene Gassmoeller; 2024-02-14; [#558](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/558)\]
@@ -25,6 +27,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - Fixed an issue where the ridge feature in spherical geometries for both the half space cooling and plate cooling models gave a discontinuous spreading center when crossing longitudes at intervals of 90 degrees. \[Daniel Douglas; 2024-01-22; [#520](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/520),[#518](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/518)\]
 - In some cases the bezier curve closest_point_on_curve_segment function would include a half circle around the end point(s) as part of a slab/fault. \[Menno Fraters, reported by Daniel Douglas;2023-12-07; [#522](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/522) and [#523](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/523)\]
+- In some cases the fault feature would not recognize points as inside the fault if they were exactly on the fault line. This is fixed now. \[Rene Gassmoeller; 2024-02-16; [#640](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/640)\]
 
 ## [0.5.0]
 ### Added

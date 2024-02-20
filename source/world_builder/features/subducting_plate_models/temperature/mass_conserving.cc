@@ -117,7 +117,7 @@ namespace WorldBuilder
           prm.declare_entry("density", Types::Double(3300),
                             "The reference density of the subducting plate in $kg/m^3$");
 
-          prm.declare_entry("plate velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<size_t>::max()))),
+          prm.declare_entry("plate velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<uint64_t>::max()))),
                             "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr");
 
           prm.declare_entry("coupling depth", Types::Double(100e3),
@@ -218,13 +218,11 @@ namespace WorldBuilder
                 ridge_coordinate *= dtr;
               }
 
-          unsigned int index_x = 0;
-          unsigned int index_y = 0;
           unsigned int ridge_point_index = 0;
-          for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
+          for (unsigned int index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
             {
               std::vector<double> plate_velocities_for_ridge;
-              for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
+              for (unsigned int index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
                 {
                   if (plate_velocities.second.size() <= 1)
                     plate_velocities_for_ridge.push_back(plate_velocities.first[0]);
