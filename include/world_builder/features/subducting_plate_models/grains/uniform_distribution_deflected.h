@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_GRAINS_RANDOM_UNIFORM_DISTRIBUTION_DEFLECTED_H
-#define WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_GRAINS_RANDOM_UNIFORM_DISTRIBUTION_DEFLECTED_H
+#ifndef WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_GRAINS_UNIFORM_DISTRIBUTION_DEFLECTED_H
+#define WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_GRAINS_UNIFORM_DISTRIBUTION_DEFLECTED_H
 
 
 #include "world_builder/features/subducting_plate_models/grains/interface.h"
@@ -88,7 +88,7 @@ namespace WorldBuilder
             std::array<std::array<double,3>,3>
             matrix_multiply(const std::array<std::array<double,3>,3> mat1, std::array<std::array<double,3>,3> const mat2) const;
 
-            
+
             /**
              * Returns a grains based on the given position, composition (e.g.
              * olivine and/or enstatite)depth in the model, gravity and current grains.

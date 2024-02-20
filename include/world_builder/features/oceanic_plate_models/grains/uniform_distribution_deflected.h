@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_GRAINS_RANDOM_UNIFORM_DISTRIBUTION_DEFLECTED_H
-#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_GRAINS_RANDOM_UNIFORM_DISTRIBUTION_DEFLECTED_H
+#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_GRAINS_UNIFORM_DISTRIBUTION_DEFLECTED_H
+#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_GRAINS_UNIFORM_DISTRIBUTION_DEFLECTED_H
 
 
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
@@ -26,6 +26,7 @@
 
 namespace WorldBuilder
 {
+  class Parameters;
 
   namespace Features
   {
@@ -39,7 +40,7 @@ namespace WorldBuilder
          * what the returned temperature or grains of the temperature and grains
          * functions of this class will be.
          */
-        class UniformDistributionDeflected final: public Interface
+        class UniformDistributionDeflected final : public Interface
         {
           public:
             /**
@@ -89,7 +90,6 @@ namespace WorldBuilder
             std::array<std::array<double,3>,3>
             matrix_multiply(const std::array<std::array<double,3>,3> mat1, std::array<std::array<double,3>,3> const mat2) const;
 
-            
             /**
              * Returns a grains based on the given position, composition (e.g.
              * olivine and/or enstatite)depth in the model, gravity and current grains.
@@ -104,6 +104,7 @@ namespace WorldBuilder
                        const double feature_max_depth) const override final;
 
           private:
+            // random uniform distribution deflected grains submodule parameters
             double min_depth;
             Objects::Surface min_depth_surface;
             double max_depth;

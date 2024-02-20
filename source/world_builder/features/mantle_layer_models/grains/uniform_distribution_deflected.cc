@@ -97,7 +97,6 @@ namespace WorldBuilder
                             "A list with the z-x-z Euler angles of the grains which are present there for each compositions.");
 
 
-
         }
 
         void
@@ -153,15 +152,33 @@ namespace WorldBuilder
                         << ") and rotation_matrices (" << basis_rotation_matrices.size() << ").");
         }
 
+        std::array<std::array<double,3>,3>
+        UniformDistributionDeflected::matrix_multiply(const std::array<std::array<double,3>,3> mat1, const std::array<std::array<double,3>,3> mat2) const
+        {
+          std::array<std::array<double,3>,3> result;
+          for (int i = 0; i < 3; i++)
+            {
+              for (int j = 0; j < 3; j++)
+                {
+                  result[i][j] = 0;
+                  for (int k = 0; k < 3; k++)
+                    {
+                      result[i][j] += mat1[i][k] * mat2[k][j];
+                    }
+                }
+            }
+          return result;
+        }
+
 
         WorldBuilder::grains
         UniformDistributionDeflected::get_grains(const Point<3> & /*position_in_cartesian_coordinates*/,
-                                                       const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                                       const double depth,
-                                                       const unsigned int composition_number,
-                                                       WorldBuilder::grains grains_,
-                                                       const double  /*feature_min_depth*/,
-                                                       const double /*feature_max_depth*/) const
+                                                 const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                                 const double depth,
+                                                 const unsigned int composition_number,
+                                                 WorldBuilder::grains grains_,
+                                                 const double  /*feature_min_depth*/,
+                                                 const double /*feature_max_depth*/) const
         {
           WorldBuilder::grains  grains_local = grains_;
           if (depth <= max_depth && depth >= min_depth)
