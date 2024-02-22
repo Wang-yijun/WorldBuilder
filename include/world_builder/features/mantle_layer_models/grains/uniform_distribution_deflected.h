@@ -89,7 +89,7 @@ namespace WorldBuilder
             std::array<std::array<double,3>,3>
             matrix_multiply(const std::array<std::array<double,3>,3> mat1, std::array<std::array<double,3>,3> const mat2) const;
 
-            
+
             /**
              * Returns a grains based on the given position, composition (e.g.
              * olivine and/or enstatite)depth in the model, gravity and current grains.
