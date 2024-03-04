@@ -111,7 +111,12 @@ namespace WorldBuilder
             std::string operation;
             std::vector<double> grain_sizes;
             std::vector<bool> normalize_grain_sizes;
-            std::vector<double> deflections;
+            std::vector<double> x1_mins;
+            std::vector<double> x1_maxs;
+            std::vector<double> x2_mins;
+            std::vector<double> x2_maxs;
+            std::vector<double> x3_mins;
+            std::vector<double> x3_maxs;
             std::vector<std::array<std::array<double, 3>, 3>> basis_rotation_matrices;
 
         };

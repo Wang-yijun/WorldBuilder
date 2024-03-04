@@ -86,9 +86,29 @@ namespace WorldBuilder
                             Types::Array(Types::Bool(true),0),
                             "A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.");
 
-          prm.declare_entry("deflections",
+          prm.declare_entry("x1 min",
                             Types::Array(Types::Double(1),0),
-                            "A list of the deflections of all of the grains in each composition between 0 and 1.");
+                            "Minimum for generating random number x1 from.");
+
+          prm.declare_entry("x1 max",
+                            Types::Array(Types::Double(1),0),
+                            "Maximum for generating random number x1 from.");
+
+          prm.declare_entry("x2 min",
+                            Types::Array(Types::Double(1),0),
+                            "Minimum for generating random number x1 from.");
+
+          prm.declare_entry("x2 max",
+                            Types::Array(Types::Double(1),0),
+                            "Maximum for generating random number x1 from.");
+
+          prm.declare_entry("x3 min",
+                            Types::Array(Types::Double(1),0),
+                            "Minimum for generating random number x1 from.");
+
+          prm.declare_entry("x3 max",
+                            Types::Array(Types::Double(1),0),
+                            "Maximum for generating random number x1 from.");
 
           prm.declare_entry("basis rotation matrices", Types::Array(Types::Array(Types::Array(Types::Double(0),3,3),3,3),0),
                             "A list with the rotation matrices of the grains which are present there for each compositions.");
@@ -136,7 +156,12 @@ namespace WorldBuilder
           operation = prm.get<std::string>("orientation operation");
           grain_sizes = prm.get_vector<double>("grain sizes");
           normalize_grain_sizes = prm.get_vector<bool>("normalize grain sizes");
-          deflections = prm.get_vector<double>("deflections");
+          x1_mins = prm.get_vector<double>("x1 min");
+          x1_maxs = prm.get_vector<double>("x1 max");
+          x2_mins = prm.get_vector<double>("x2 min");
+          x2_maxs = prm.get_vector<double>("x2 max");
+          x3_mins = prm.get_vector<double>("x3 min");
+          x3_maxs = prm.get_vector<double>("x3 max");
 
           WBAssertThrow(compositions.size() == grain_sizes.size(),
                         "There are not the same amount of compositions (" << compositions.size()
@@ -144,9 +169,6 @@ namespace WorldBuilder
           WBAssertThrow(compositions.size() == normalize_grain_sizes.size(),
                         "There are not the same amount of compositions (" << compositions.size()
                         << ") and normalize_grain_sizes (" << normalize_grain_sizes.size() << ").");
-          WBAssertThrow(compositions.size() == deflections.size(),
-                        "There are not the same amount of compositions (" << compositions.size()
-                        << ") and deflections (" << deflections.size() << ").");
           WBAssertThrow(compositions.size() == basis_rotation_matrices.size(),
                         "There are not the same amount of compositions (" << compositions.size()
                         << ") and rotation_matrices (" << basis_rotation_matrices.size() << ").");
@@ -192,6 +214,9 @@ namespace WorldBuilder
                       if (compositions[i] == composition_number)
                         {
                           std::uniform_real_distribution<> dist(0.0,1.0);
+                          std::uniform_real_distribution<> dist_x1(x1_mins[i],x1_maxs[i]);
+                          std::uniform_real_distribution<> dist_x2(x2_mins[i],x2_maxs[i]);
+                          std::uniform_real_distribution<> dist_x3(x3_mins[i],x3_maxs[i]);
                           for (auto &&it_rotation_matrices : grains_local.rotation_matrices)
                             {
                               // set a uniform random a_cosine_matrix per grain
@@ -209,14 +234,13 @@ namespace WorldBuilder
                               // the public domain, and is yours to study, modify, and use."
 
                               // first generate three random numbers between 0 and 1 and multiply them with 2 PI or 2 for z. Note that these are not the same as phi_1, theta and phi_2.
-                              const double one = dist(world->get_random_number_engine());
-                              const double two = dist(world->get_random_number_engine());
-                              const double three = dist(world->get_random_number_engine());
+                              const double one = dist_x1(world->get_random_number_engine());
+                              const double two = dist_x2(world->get_random_number_engine());
+                              const double three = dist_x3(world->get_random_number_engine());
 
-                              // the distribution is restricted by the deflection (between 0 and 1)
-                              const double theta = 2.0 * Consts::PI * one * deflections[i]; // Rotation about the pole (Z)
+                              const double theta = 2.0 * Consts::PI * one; // Rotation about the pole (Z)
                               const double phi = 2.0 * Consts::PI * two; // For direction of pole deflection.
-                              const double z = 2.0* three * deflections[i]; //For magnitude of pole deflection.
+                              const double z = 2.0* three; //For magnitude of pole deflection.
 
                               // Compute a vector V used for distributing points over the sphere
                               // via the reflection I - V Transpose(V).  This formulation of V
