@@ -1266,6 +1266,72 @@ namespace WorldBuilder
 
 
   template<>
+  std::vector<std::array<std::array<std::array<double,3>,3>,3> >
+  Parameters::get_vector(const std::string &name)
+  {
+    std::vector<std::array<std::array<std::array<double,3>,3>,3>> vector;
+    const std::string strict_base = this->get_full_json_path();
+    WBAssertThrow(Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr,
+                  "Error: " << name << " was not defined in " << strict_base
+                  << ", schema path: " << this->get_full_json_schema_path() << ".");
+
+    Value *array1 = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
+
+    for (size_t i = 0; i < array1->Size(); ++i)
+      {
+        const std::string base_i =
+          strict_base + "/" + name + "/" + std::to_string(i);
+
+        Value *array2 = Pointer(base_i.c_str()).Get(parameters);
+
+        WBAssertThrow(array2->Size() == 3,
+                      "Entry " << i << " must contain exactly 3 3*3 matrices.");
+
+        std::array<std::array<std::array<double,3>,3>,3> tensor_set;
+
+        // loop over 3 matrices
+        for (size_t j = 0; j < 3; ++j)
+          {
+            const std::string base_j = base_i + "/" + std::to_string(j);
+            Value *array3 = Pointer(base_j.c_str()).Get(parameters);
+
+            WBAssertThrow(array3->Size() == 3,
+                          "Matrix " << j << " in entry " << i
+                          << " must be 3x3 (outer dimension incorrect).");
+
+            // loop rows of matrix
+            for (size_t k = 0; k < 3; ++k)
+              {
+                const std::string base_k = base_j + "/" + std::to_string(k);
+
+                Value *row = Pointer(base_k.c_str()).Get(parameters);
+
+                WBAssertThrow(row->Size() == 3,
+                              "Matrix " << j << " in entry " << i
+                              << " must be 3x3 (inner dimension incorrect at row " << k << ").");
+
+                try
+                  {
+                    tensor_set[j][k][0] = Pointer((base_k + "/0").c_str()).Get(parameters)->GetDouble();
+                    tensor_set[j][k][1] = Pointer((base_k + "/1").c_str()).Get(parameters)->GetDouble();
+                    tensor_set[j][k][2] = Pointer((base_k + "/2").c_str()).Get(parameters)->GetDouble();
+                  }
+                catch (...)
+                  {
+                    WBAssertThrow(false,
+                                  "Could not convert values of " << base_k << " into doubles.");
+                  }
+              }
+          }
+
+        vector.push_back(tensor_set);
+      }
+
+    return vector;
+  }
+
+
+  template<>
   std::vector<std::vector<Point<2> > >
   Parameters::get_vector(const std::string &name)
   {
